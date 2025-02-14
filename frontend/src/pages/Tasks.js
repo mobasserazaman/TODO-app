@@ -3,8 +3,9 @@ import "../styles/Tasks.css";
 import axios from 'axios';
 import { fetchTasks, addTask, removeTask, modifyTask } from '../slices/tasksSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../slices/authSlice';
 
-export default function Tasks({ user, logout }) {
+export default function Tasks({ user }) {
 
   const dispatch = useDispatch();
   const { tasks, loading, error } = useSelector(state => state.tasks);
@@ -45,14 +46,8 @@ export default function Tasks({ user, logout }) {
     dispatch(removeTask(id));
   }
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/auth/logout", {}, { withCredentials: true });
-      console.log(response);
-      if (response.status === 200) logout();
-    } catch (error) {
-      console.log(error);
-    }
+  const handleLogout = () => {
+    dispatch(logout());
   }
 
   const updateForm = <form onSubmit={handleUpdate}>

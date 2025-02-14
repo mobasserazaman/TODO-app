@@ -8,14 +8,14 @@ verifyAuth.get("/", async (req, res) => {
   console.log(req.headers.cookie);
   const token = req.cookies.token; // Read token from cookies
 
-  if (!token) return res.json({ isAuthenticated: false });
+  if (!token) return res.status(401).json({ message: "User not verified" });
 
   try {
     const decoded = jwt.verify(token, "secret");
     const user = await User.findOne({username: decoded.username});
     res.json({ isAuthenticated: true, user: {username: user.username, tasks: user.tasks} });
   } catch (error) {
-    res.json({ isAuthenticated: false });
+    res.status(401).json({ message: "User not verified" });
   }
 });
 

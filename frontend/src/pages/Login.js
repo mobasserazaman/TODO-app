@@ -1,8 +1,12 @@
 import React, { isValidElement, useState } from 'react'
 import axios from 'axios';
 import { replace, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, register } from '../slices/authSlice';
 
-export default function Login({login}) {
+export default function Login() {
+
+    const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -11,38 +15,24 @@ export default function Login({login}) {
 
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(location.pathname)
 
-    const user = {
-        username,
-        password
-    }
-
-    const user2 = {
-        username: username2,
-        password: password2
-    }
-
-    const clickHandler = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        console.log('Logging in')
-        const response = await axios.post("http://localhost:5000/auth/login", user, { withCredentials: true });
-        login(response.data.user);
-        console.log(`print response : ${response.data.user}`);
+        dispatch(login({ username, password }));
     }
 
-    const clickHandler2 = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        const response = await axios.post("http://localhost:5000/auth/register", user2, { withCredentials: true });
-        console.log(response.msg);
-
+        dispatch(register({ username: username2, password: password2 }));
+        setPassword2('');
+        setUsername2('');
     }
 
 
     return (
         <div>
             <div><h1>TODOs</h1></div>
-            <form onSubmit={clickHandler}>
+            <form onSubmit={handleLogin}>
                 <label>Username:</label>
                 <input type='text' id='username' value={username} onChange={e => setUsername(e.target.value)} required></input>
                 <label>Password:</label>
@@ -50,7 +40,7 @@ export default function Login({login}) {
                 <button type='submit'>Login</button>
             </form>
 
-            <form onSubmit={clickHandler2}>
+            <form onSubmit={handleRegister}>
                 <label>Username:</label>
                 <input type='text' id='username2' value={username2} onChange={e => setUsername2(e.target.value)} required></input>
                 <label>Password:</label>

@@ -31,7 +31,7 @@ const login = async (req, res) => {
                 .json({ msg: "Username or password is incorrect" });
         }
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+        if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
         const token = jwt.sign({ username }, "secret");
         res.cookie("token", token, {
             httpOnly: true,   // Prevents JavaScript from accessing the cookie
@@ -40,7 +40,7 @@ const login = async (req, res) => {
         })
         res.json({ msg: "Login successful", user: { username: user.username, tasks: user.tasks } });
     } catch (error) {
-        res.status(500).json({ msg: "Server error", error });
+        res.status(500).json({ message: "Server error" });
     }
 }
 
