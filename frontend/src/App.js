@@ -1,10 +1,11 @@
 import Login from './pages/Login';
 import Tasks from './pages/Tasks';
+import Register from './pages/Register';
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUser } from './slices/authSlice';
+import { fetchUser, register } from './slices/authSlice';
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={user ? <Navigate to="/tasks" /> : <Navigate to="/login" />} />
       <Route path="/login" element={user ? <Navigate to={'/tasks'} /> : <Login />} />
+      <Route path="/register" element={<Register/>} />
       <Route path="/tasks" element={user ? <Tasks user={user}/> : <Navigate to={'/login'} />} />
     </Routes>
   );

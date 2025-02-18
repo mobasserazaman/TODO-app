@@ -4,91 +4,64 @@ import axios from 'axios';
 import { fetchTasks, addTask, removeTask, modifyTask } from '../slices/tasksSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../slices/authSlice';
+import Heading from '../components/Heading';
+import { Box, ListItem, List, Typography, Button } from '@mui/material';
+import Task from '../components/Task';
+import TaskForm from '../components/TaskForm';
+import TaskModal from '../components/TaskCreateModal';
 
 export default function Tasks({ user }) {
 
   const dispatch = useDispatch();
   const { tasks, loading, error } = useSelector(state => state.tasks);
-
-  const [title, setTitle] = useState('');
-  const [completed, setCompleted] = useState(false);
-  const [updateFormIsOpen, setUpdateFormIsOpen] = useState(false);
+  const [createTaskModalIsOpen, setCreateTaskModalIsOpen] = useState(false);
+  const [editTaskModalIsOpen, setEditTaskModalIsOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
 
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]) //?why put dispatch in dependenct array
 
-  const handleCreate = (e) => {
-    e.preventDefault();
-    dispatch(addTask({ title, completed }));
-    setTitle('');
-    setCompleted(false);
+  const handleCreate = (newTask) => {
+    dispatch(addTask(newTask));
+    setCreateTaskModalIsOpen(false);
   }
-
-  const openUpdateForm = (task) => {
-    setUpdateFormIsOpen(true);
-    setTitle(task.title);
-    setCompleted(task.completed);
-    setCurrentTask(task);
-  }
-
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    dispatch(modifyTask({ id: currentTask._id, newTask: { title, completed } }));
-    setTitle('');
-    setCompleted(false);
+  const handleUpdate = (newTask) => {
+    dispatch(modifyTask({ id: currentTask._id, newTask }));
+    setEditTaskModalIsOpen(false);
     setCurrentTask(null);
-    setUpdateFormIsOpen(false);
   }
-
   const handleDelete = (id) => {
     dispatch(removeTask(id));
   }
-
+  const openCreateTaskModal = () => {
+    setCreateTaskModalIsOpen(true);
+  }
+  const closeCreateTaskModal = () => {
+    setCreateTaskModalIsOpen(false);
+  }
+  const openEditTaskModal = (task) => {
+    setEditTaskModalIsOpen(true);
+    setCurrentTask(task);
+  }
+  const closeEditTaskModal = () => {
+    setEditTaskModalIsOpen(false);
+  }
   const handleLogout = () => {
     dispatch(logout());
   }
 
-  const updateForm = <form onSubmit={handleUpdate}>
-    <label>Title</label>
-    <input type='text' id='title' name='title' onChange={e => setTitle(e.target.value)} placeholder="Title" value={title} required></input>
-    <label>Complete</label>
-    <input type='checkbox' id='completed' name='completed' checked={completed} onChange={(e) => setCompleted(e.target.checked)}></input>
-    <button type='submit'>Update</button>
-    <button onClick={() => { setUpdateFormIsOpen(false); setCurrentTask(null) }}>Cancel</button>
-  </form>;
-
-
-
   return (
-    <div>
-      <h1 id="heading">Welcome {user.username}</h1>
-      <button onClick={handleLogout}>Logout</button>
-      {loading && <p>loading..</p>}
-
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      {
-        updateFormIsOpen ? updateForm : <ul>
-          {tasks.map((task) =>
-            <li key={task._id}>
-              <p>{task.title}</p>
-              <p>Completed? {task.completed ? "Yes" : "No"}</p>
-              <button onClick={() => handleDelete(task._id)}>Delete</button>
-              <button onClick={() => openUpdateForm(task)}>Update</button>
-            </li>)}
-          <form onSubmit={handleCreate}>
-            <label>Title</label>
-            <input type='text' id='title' name='title' onChange={e => setTitle(e.target.value)} placeholder="Title" value={title} required></input>
-            <label>Complete</label>
-            <input type='checkbox' id='completed' name='completed' checked={completed} onChange={(e) => setCompleted(e.target.checked)}></input>
-            <button type='submit'>Create Task</button>
-          </form>
-        </ul>
-
-      }
-
-
-    </div>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "70%", margin: "0 auto" }}>
+      <Heading />     
+      <Typography variant='h5' sx={{mt:3}}>Welcome <strong>{user.username},</strong></Typography> 
+      <Button size='small' variant='contained' sx={{m:1}} color='secondary' onClick={handleLogout}>Logout</Button>
+      <Button size='small' variant='contained' sx={{m:1}} onClick={openCreateTaskModal}>Create Task</Button>
+      <List sx={{width:'60%'}}>
+        {tasks.map(task => <ListItem key={task._id}><Task task={task} handleDelete={handleDelete} openModal={openEditTaskModal} /></ListItem>)}
+      </List>
+      <TaskModal open={createTaskModalIsOpen} clickHandler={handleCreate} close={closeCreateTaskModal} />
+      <TaskModal open={editTaskModalIsOpen} task={currentTask} clickHandler={handleUpdate} close={closeEditTaskModal} />
+    </Box>
   )
 }
