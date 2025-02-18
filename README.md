@@ -1,3 +1,5 @@
+
+
 # 📝 To-Do App
 
 A full-stack **To-Do App** built with **Express.js, React, MongoDB, and Docker**. The app provides user authentication using **JWT with HTTP-only cookies** and manages state using **React Context API & useState**.
@@ -5,12 +7,18 @@ A full-stack **To-Do App** built with **Express.js, React, MongoDB, and Docker**
 ---
 
 ## 📌 Features
-✅ **User Authentication** (JWT & HTTP-only cookies)
-✅ **Create, Read, Update, and Delete (CRUD) To-Dos**
-✅ **State Management with React Context API**
-✅ **Protected Routes for Authenticated Users**
-✅ **MongoDB Containerized with Docker**
-✅ **Full App Dockerized (Backend & Frontend)**
+- [x] User Authentication** (JWT & HTTP-only cookies)
+- [x] Create, Read, Update, and Delete (CRUD) To-Dos
+- [x] State Management with Redux
+- [x] Protected Routes for Authenticated Users
+- [x] MongoDB Containerized with Docker
+- [x] Full App Dockerized (Backend & Frontend)
+- [x] Style Frontend (Material UI)
+- [x] Backend tests (Jest)
+- [ ] Frontend tests (React Testing Library & Jest) - in progress
+- [ ] CI/CD (Github Actions) - in progress
+- [ ] Deploy (AWS) - in progress
+
 
 ---
 
