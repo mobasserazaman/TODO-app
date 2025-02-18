@@ -1,4 +1,5 @@
-
+<img width="300" height="300" alt="Screenshot 2025-02-18 at 1 43 53 PM" src="https://github.com/user-attachments/assets/bff46d93-5848-43f8-a061-48e8534afb13" />
+<img width="300" height="300" alt="Screenshot 2025-02-18 at 1 44 49 PM" src="https://github.com/user-attachments/assets/d903ff11-7558-4ecd-b864-2c0daa5b21e5" />
 
 # 📝 To-Do App
 
