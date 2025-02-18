@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Modal, Box, Typography, Button, FormControl, OutlinedInput, InputLabel, Checkbox } from '@mui/material'
-import TaskForm from './TaskForm';
+import { Modal, Box, Button, FormControl, OutlinedInput, InputLabel, Checkbox } from '@mui/material'
 export default function TaskModal({ open, close, clickHandler, task }) {
 
   const [title, setTitle] = useState("");

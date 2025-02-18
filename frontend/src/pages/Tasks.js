@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import "../styles/Tasks.css";
-import axios from 'axios';
 import { fetchTasks, addTask, removeTask, modifyTask } from '../slices/tasksSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../slices/authSlice';
 import Heading from '../components/Heading';
 import { Box, ListItem, List, Typography, Button } from '@mui/material';
 import Task from '../components/Task';
-import TaskForm from '../components/TaskForm';
 import TaskModal from '../components/TaskCreateModal';
 
 export default function Tasks({ user }) {
